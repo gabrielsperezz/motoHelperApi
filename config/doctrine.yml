@@ -1,0 +1,21 @@
+doctrine:
+    options:
+      db.options: &DBOPTIONS
+        driver: pdo_mysql
+        host: 127.0.0.1
+        port: 3306
+        user: root
+        password: 
+        dbname: motohelper
+        charset: utf8
+    orm:
+      orm.auto_generate_proxies: true
+      orm.proxies_dir: "../data/DoctrineORM/Proxy"
+      orm.proxies_namespace: "EntityProxy"
+      orm.em.options:
+        mappings:
+          -
+            use_simple_annotation_reader: false
+            type: annotation
+            namespace: "MotoHelper\\Entity"
+            path: "./src/MotoHelper/Entity"

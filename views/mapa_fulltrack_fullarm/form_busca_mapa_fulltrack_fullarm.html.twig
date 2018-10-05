@@ -1,0 +1,81 @@
+<div id="result-receptores">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="box-form" class="box box-default">
+
+                <div class="box-header">
+                    <h3 class="box-title">{{ app.trans('tela_form_mapa_fullarm_fulltrack_title_desc') }}</h3>
+                </div>
+
+                <div class="box-body">
+                    <form id="mapa-fullarm-fulltrack-busca" role="form">
+                        <div class="row">            
+                            <div class="col-md-12">
+                                <div id="box-form" class="box box-tema">
+                                    <div class="box-header">
+
+                                        <h3 class="box-title">{{ app.trans('tela_form_busca_mapa_fullarm_fulltrack_title')}}</h3>
+                                        <div class="box-tools pull-right">
+                                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                        </div>
+
+                                    </div>
+                                    <div class="box-body">
+                                        <div class="row"> 
+                                            <div class="col col-xs-3 col-sm-4 col-md-3 col-lg-2">
+                                                <a id="novo-mapeamento"class="btn btn-tema btn-block" href="#">
+                                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 
+                                                    <span class="hidden-xs">{{ app.translator.trans('tela_form_busca_mapa_fullarm_fulltrack_button_novo') }}</span>
+                                                </a>
+                                            </div>
+                                            <div class="col col-xs-9 col-sm-8 col-md-9 col-lg-10">
+                                                <div class="input-group">
+                                                    <div class="input-group-btn">
+                                                        <button type="button" class="btn btn-default" >
+                                                            {{ app.trans('tela_form_busca_mapa_fullarm_fulltrack_buscar_por')}} 
+                                                        </button>
+                                                    </div>
+                                                    <input id="mapa-buscar" name="receptor-buscar" type="text" class="form-control" placeholder="{{ app.trans('tela_form_busca_mapa_fullarm_fulltrack_digite_aqui')}}">
+
+                                                    <span class="input-group-btn">
+                                                        <button id="bt-buscar-mapa" data-loading-text="{{ app.translator.trans('tela_form_busca_mapa_fullarm_fulltrack_button_loading') }}..." type="submit" class="btn btn-default btn-flat"><i class="fa fa-search"></i></button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col col-md-12">
+                                                <hr/>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col col-md-12">
+                                                <table id="table-mapa-fullarm-fulltrack" class="table table-striped dataTable table-condensed table-hover" cellspacing="0" width="100%">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>{{app.trans('tela_form_busca_mapa_fullarm_fulltrack_options_id')}}</th>
+                                                            <th>{{app.trans('tela_form_busca_mapa_fullarm_fulltrack_options_descricao')}}</th>
+                                                            <th>{{app.trans('tela_form_busca_mapa_fullarm_fulltrack_options_indice')}}</th>
+                                                            <th>{{app.trans('tela_form_busca_mapa_fullarm_fulltrack_options_conexao')}}</th>
+                                                            <th>{{app.trans('tela_form_busca_mapa_fullarm_fulltrack_options_acoes')}}</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div> 
+                        </div>
+                    </form>                                    
+                    <form id="mapa-fullarm-fulltrack-form" style="display:none" > 
+                        {%include 'mapa_fulltrack_fullarm/form_mapa_fulltrack_fullarm.html.twig'%} 
+                    </form> 
+                </div> 
+            </div>                             
+        </div>
+    </div>
+</div>

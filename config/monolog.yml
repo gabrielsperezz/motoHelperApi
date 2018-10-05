@@ -1,0 +1,4 @@
+monolog:
+  monolog.name: MotoHelperWeb
+  monolog.level:  DEBUG
+  monolog.logfile:  /var/www/html/gabriel/motoHelper/data/log/motohelper-api.log

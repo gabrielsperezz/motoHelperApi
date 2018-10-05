@@ -1,0 +1,35 @@
+{
+  "name": "trabalho-terceiro-semestre",
+  "authors": [
+    "Gabriel Perez <gabriel.perez0706@icloud.com>"
+  ],
+  "description": "Trabalho terceiro Semestre",
+  "main": "",
+  "moduleType": [],
+  "keywords": [
+    "trabalho"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "ionicons": "ionicons#~2.0.1",
+    "font-awesome": "components-font-awesome#~4.5.0",
+    "EasyAutocomplete": "~1.3.5",
+    "jquery-throttle-debounce": "*",
+    "izitoast": "1.1.2",
+    "switchery": "~0.8.2",
+    "gentelella": "^1.4.0"
+  },
+  "resolutions": {
+    "jquery": ">=2"
+  }
+}

@@ -1,0 +1,62 @@
+<div class="row">            
+    <div class="col-md-12">
+        <div id="box-form" class="box box-tema">
+
+            <div class="box-header">
+                <h3 class="box-title">{{ app.trans('tela_form_mapa_fullarm_fulltrack_title')}} {{app.monitoramento.config.nome_plataforma|default('Fullarm')}} x {{app.monitoramento.config.nome_plataforma_fulltrack|default('Fulltrack')}}</h3>
+            </div>
+
+            <div class="box-body">
+                <div class="row"> 
+                    <input id="mapeamento_id" name="mapeamento_id" value="{{ mapeamento.id|default('') }}" type="hidden"/>
+                </div>
+                <div class="row">
+
+                    <div class="col col-sm-6 col-md-3 col-lg-3">
+                        <div class="form-group">
+                            <label>{{ app.trans('tela_form_mapa_fullarm_fulltrack_text_descricao')}}:</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-credit-card"></i></span>
+                                <input id="mapeamento_descricao" name="mapeamento_descricao" value="{{ mapeamento.descricao|default('') }}" type="text" class="form-control" placeholder="{{ app.trans('tela_form_mapa_fullarm_fulltrack_text_descricao')}}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-md-3 col-lg-3">
+                        <div class="form-group">
+                            <label>{{ app.trans('tela_form_mapa_fullarm_fulltrack_text_indice')}}:</label>
+                            <select id="mapeamento_indice" name="mapeamento_indice" class="form-control select2" data-id="{{mapeamento.indice| default('')}}" style="width: 100%">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3 col-lg-3">
+                        <div class="form-group">
+                            <label>{{ app.trans('tela_form_mapa_fullarm_fulltrack_text_receptor')}}:</label>
+                            <select id="mapeamento_receptor" name="mapeamento_receptor" class="form-control select2" data-id="{{mapeamento.receptor| default('')}}" style="width: 100%">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-md-3 col-lg-3">
+                        <div class="form-group">
+                            <label>{{ app.trans('tela_form_painel_conexao_receptor')}}:</label>
+                            <select id="mapeamento_conexao" name="mapeamento_conexao" data-id="{{mapeamento.conexao| default('')}}" class="form-control select2" style="width:100%">
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <div class="col col-sm-6 col-md-2 col-md-offset-8  col-lg-2 col-lg-offset-8">
+                            <button id="cancelar-mapeamento" data-loading-text="{{ app.translator.trans('excluindo') }}..." type="button" class="btn btn-danger btn-block"><i class="fa fa-arrow-circle-left"></i> <span class="hidden-xs">{{ app.trans('tela_form_mapa_fullarm_fulltrack_button_cancelar')}}</span></button>
+                        </div>
+                        <div class="col col-sm-6 col-md-2  col-lg-2">
+                            <button id="salvar-mapeamento" data-loading-text="{{ app.translator.trans('carregando') }}..." type="submit" class="btn btn-primary btn-block"><i class="fa fa-save"></i> <span class="hidden-xs">{{ app.trans('tela_form_mapa_fullarm_fulltrack_button_salvar')}}</span></button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

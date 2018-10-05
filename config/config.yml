@@ -1,0 +1,7 @@
+imports:
+  - { resource: monolog.yml }
+  - { resource: doctrine.yml }
+  - { resource: translate.yml }
+  - { resource: params.yml }
+twig:
+  twig.path: ../views

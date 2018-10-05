@@ -1,0 +1,66 @@
+ {% extends 'ft_base/backend.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block container %}
+    <div class="right_col" role="main">
+        <div class="">
+                        <div class="row">
+                <div class="col-md-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>Solicitações de veículos</h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <table id="table_livros" class="table table-striped ">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Empresa</th>
+                                    <th>Descrição</th>
+                                    <th>Placa</th>
+                                    <th>Cor</th>
+                                    <th>Fabricante</th>
+                                    <th>Modelo</th>
+                                    <th>Data Solicitação</th>
+                                    <th>Ações</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                {% for veiculo in veiculos %}
+                                    <tr>
+                                        <td>{{ veiculo.id }}</td>
+                                        <td>{{ veiculo.empresa.nome }}</td>
+                                        <td>{{ veiculo.desAcricao }}</td>
+                                        <td>{{ veiculo.placa  }}</td>
+                                        <td>{{ veiculo.cor }}</td>
+                                        <td>{{ veiculo.fabricante }}</td>
+                                        <td>{{ veiculo.modelo }}</td>
+                                        <td>{{ veiculo.verificacao.data_solicitacao }}</td>
+                                        <td>
+                                            <i data-id-veiculo="{{ veiculo.id }}" class="btn btn-sm btn-success fa fa-check-circle autorizar"></i>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ app.asset_path }}/js/veiculo_autorizacao/veiculo-autorizacao-modulo.js" type="text/javascript"></script>
+    <script src="{{ app.asset_path }}/js/veiculo_autorizacao/veiculo-autorizacao.js" type="text/javascript"></script>
+
+{% endblock %}
+
+
