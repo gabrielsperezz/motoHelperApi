@@ -1,0 +1,74 @@
+{% extends 'admin/ft_base/backend.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block container %}
+    <div class="right_col" role="main">
+        <div class="">
+            <div class="page-title">
+                <div class="title_left">
+                    <h3>Emprestimo e livros</h3>
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="x_panel">
+                        <div class="x_title">
+                            <h2>Novo emprestimo de livros</h2>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div class="x_content">
+                            <form id="form_livro" class="form-horizontal form-label-left" novalidate>
+                                <span class="section">Dados básicos</span>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Aluno</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <select id="aluno" class="form-control">
+                                            {% for aluno in alunos %}
+                                            <option value="{{ aluno.id }}"> {{ aluno.descricao }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Livro</label>
+                                    <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <select id="livro" class="form-control">
+                                            {% for livro in livros %}
+                                                <option value="{{ livro.id }}"> {{ livro.titulo }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="ln_solid"></div>
+                                <div class="form-group">
+                                    <div class="col-md-6 col-md-offset-5">
+                                        <button id="salvar" type="submit" class="btn btn-success">Emprestar</button>
+                                        <button id="cancelar" class="btn btn-primary">Cancelar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ app.asset_path }}/js/livros_emprestimo/livro-emprestimo-modulo.js" type="text/javascript"></script>
+    <script src="{{ app.asset_path }}/js/livros_emprestimo/livro-emprestimo-view.js" type="text/javascript"></script>
+    <script src="{{ app.asset_path }}/js/livros_emprestimo/livro_emprestimo.js" type="text/javascript"></script>
+
+{% endblock %}
+
+

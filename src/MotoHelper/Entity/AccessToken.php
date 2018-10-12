@@ -16,7 +16,8 @@ use MotoHelper\Entity\Login;
  */
 class AccessToken
 {
-
+    const TIPO_ADMIN = 1;
+    const TIPO_APP = 2;
 
     /**
      * @var integer
@@ -39,6 +40,22 @@ class AccessToken
      * @ORM\JoinColumn(name="id_login",referencedColumnName="id", onDelete="CASCADE")
      */
     private $login;
+
+    /**
+     * @var integer
+     * @ORM\Column(type="integer")
+     */
+    private $tipo;
+
+    public function getTipo()
+    {
+        return $this->tipo;
+    }
+
+    public function setTipo($tipo)
+    {
+        $this->tipo = $tipo;
+    }
 
     public function getId()
     {

@@ -1,0 +1,110 @@
+{% extends "app/ft_base/base.html.twig" %}
+
+{% block stylesheets %}
+    <link href="{{ app.lib_path }}/gentelella/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"
+          type="text/css"/>
+    <link href="{{ app.lib_path }}/gentelella/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet"
+          type="text/css"/>
+    <link href="{{ app.lib_path }}/gentelella/vendors/nprogress/nprogress.css" rel="stylesheet">
+    <link href="{{ app.lib_path }}/gentelella/vendors/nprogress/nprogress.css" rel="stylesheet" type="text/css"/>
+    <link href="{{ app.lib_path }}/gentelella/vendors/animate.css/animate.min.css" rel="stylesheet" type="text/css">
+    <link href="{{ app.lib_path }}/gentelella/vendors/iCheck/skins/flat/blue.css" rel="stylesheet" type="text/css">
+
+    <link href="{{ app.lib_path }}/gentelella/vendors/datatables.net-bs/css/dataTables.bootstrap.css" rel="stylesheet"
+          type="text/css"/>
+    <link href="{{ app.lib_path }}/gentelella/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css"
+          rel="stylesheet" type="text/css"/>
+    <link href="{{ app.lib_path }}/gentelella/build/css/custom.min.css" rel="stylesheet" type="text/css"/>
+    <link href="{{ app.lib_path }}/ionicons/css/ionicons.min.css" rel="stylesheet" type="text/css"/>
+
+
+    <link href="{{ app.lib_path }}/izitoast/dist/css/iziToast.min.css" rel="stylesheet" type="text/css"/>
+    <link href="{{ app.asset_path }}/css/template.css" rel="stylesheet" type="text/css"/>
+{% endblock %}
+
+{% block body_params %}class="nav-md"{% endblock %}
+
+{% block body %}
+    <div class="container body">
+        <div class="main_container">
+            {{ parent() }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block left_side %}
+    {% include 'app/ft_base/left_side.html.twig' with {'option': 'dasboard'} %}
+{% endblock %}
+
+{% block header %}
+    {% include 'app/ft_base/header.html.twig' with {'option': 'dasboard'} %}
+{% endblock %}
+
+{% block footer %}
+    {% include 'app/ft_base/footer.html.twig' with {'option': 'dasboard'} %}
+{% endblock %}
+
+{% block right_side %}
+
+{% endblock %}
+
+{% block javascripts %}
+
+    <script src="{{ app.lib_path }}/gentelella/vendors/jquery/dist/jquery.js"></script>
+    <script src="{{ app.lib_path }}/gentelella/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="{{ app.lib_path }}/gentelella/vendors/fastclick/lib/fastclick.js"></script>
+    <script src="{{ app.lib_path }}/gentelella/vendors/nprogress/nprogress.js"></script>
+    <script src="{{ app.lib_path }}/gentelella/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+    <script src="{{ app.lib_path }}/gentelella/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
+    <script src="{{ app.lib_path }}/gentelella/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="{{ app.lib_path }}/gentelella/vendors/select2/dist/js/select2.min.js"></script>
+    <script src="{{ app.lib_path }}/gentelella/vendors/select2/dist/js/i18n/pt-BR.js"></script>
+    <script src="{{ app.lib_path }}/gentelella/vendors/select2/dist/js/i18n/es.js"></script>
+    <script src="{{ app.lib_path }}/gentelella/vendors/iCheck/icheck.min.js"></script>
+    <script src="{{ app.lib_path }}/izitoast/dist/js/iziToast.min.js"></script>
+    <script src="{{ app.lib_path }}/gentelella/build/js/custom.min.js"></script>
+
+    <script src="{{ app.asset_path}}/js/backend/generic-error-handler.js" type="text/javascript"></script>
+    <script src="{{ app.asset_path }}/js/backend/generic-izitoast-menssage.js"></script>
+    <script src="{{ app.asset_path }}/js/backend/default-config.js"></script>
+
+
+    <script>
+        var language_datatable = (function () {
+            return {
+                "decimal": "",
+                "emptyTable": "{{ app.trans('datatable_empty_table') }}",
+                "info": "{{ app.trans('datatable_info') }}",
+                "infoEmpty": "{{ app.trans('datatable_info_empty') }}",
+                "infoFiltered": "{{ app.trans('datatable_info_filtered') }}",
+                "infoPostFix": "{{ app.trans('datatable_info_postFix') }}",
+                "thousands": "{{ app.trans('datatable_info_thousands') }}",
+                "lengthMenu": "{{ app.trans('datatable_length_menu') }}",
+                "loadingRecords": "{{ app.trans('datatable_loading_records') }}",
+                "processing": "{{ app.trans('datatable_processing') }}",
+                "search": "{{ app.trans('datatable_search') }}",
+                "zeroRecords": "{{ app.trans('datatable_zero_records') }}",
+                "paginate": {
+                    "first": "{{ app.trans('datatable_paginate_first') }}",
+                    "last": "{{ app.trans('datatable_paginate_last') }}",
+                    "next": "{{ app.trans('datatable_paginate_next') }}",
+                    "previous": "{{ app.trans('datatable_paginate_previous') }}",
+                },
+                "aria": {
+                    "sortAscending": "{{ app.trans('datatable_sort_ascending') }}",
+                    "sortDescending": "{{ app.trans('datatable_sort_descending') }}"
+                },
+                select: {
+                    rows: "%d {{ app.trans('datatable_row_select') }}"
+                }
+            };
+        })();
+        var sucesso = "{{ app.translator.trans('alert_title_sucesso') }}";
+        var erro = "{{ app.translator.trans('erro') }}";
+        var erro_generico = "{{ app.translator.trans('erro_generico') }}";
+        var sim = "{{ app.translator.trans('sim') }}";
+        var nao = "{{ app.translator.trans('nao') }}";
+    </script>
+
+{% endblock %}
+

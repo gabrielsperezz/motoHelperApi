@@ -20,7 +20,7 @@ use MotoHelper\Helper\PasswordHash;
  * })
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="tipo", type="integer")
- * @ORM\DiscriminatorMap({"1" = "MotoHelper\Entity\LoginAdministrador", "2" = "MotoHelper\Entity\LoginEmpresa", "3" = "MotoHelper\Entity\LoginCliente"})
+ * @ORM\DiscriminatorMap({"1" = "MotoHelper\Entity\LoginAdministrador", "2" = "MotoHelper\Entity\LoginEmpresa", "3" = "MotoHelper\Entity\LoginCliente", "4" = "MotoHelper\Entity\LoginMotoboy"})
  */
 abstract class Login
 {

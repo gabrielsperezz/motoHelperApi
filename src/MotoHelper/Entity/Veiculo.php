@@ -16,7 +16,7 @@ class Veiculo
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    private $id;
 
     /**
      * @var Empresa
@@ -26,16 +26,17 @@ class Veiculo
     private $empresa;
 
     /**
-     * @var string
-     * @ORM\Column(type="string")
+     * @var Cor
+     * @ORM\ManyToOne(targetEntity="Cor")
+     * @ORM\JoinColumn(name="id_cor",referencedColumnName="id", onDelete="CASCADE")
      */
-    private $descricao;
+    private $cor;
 
     /**
      * @var string
      * @ORM\Column(type="string")
      */
-    private $cor;
+    private $descricao;
 
     /**
      * @var string
@@ -59,7 +60,7 @@ class Veiculo
      * @var VeiculoVerificacao
      * @ORM\OneToOne(targetEntity="VeiculoVerificacao", mappedBy="veiculo",cascade={"persist","remove"}))
      */
-    protected $verificacao;
+    private $verificacao;
 
 
     public function __construct()
@@ -156,7 +157,7 @@ class Veiculo
     {
         return [
             'id' => $this->id,
-            'cor' => $this->cor,
+            'cor' => $this->cor->toArray(),
             'placa' => $this->placa,
             'modelo' => $this->modelo,
             'descricao' => $this->descricao,

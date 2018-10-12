@@ -1,0 +1,74 @@
+{% extends 'admin/ft_base/base.html.twig' %}
+
+{% block stylesheets %}
+    <!-- Bootstrap -->
+    <link href="{{ app.lib_path }}/gentelella/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="{{ app.lib_path }}/gentelella/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="{{ app.lib_path }}/gentelella/vendors/nprogress/nprogress.css" rel="stylesheet">
+    <!-- Animate.css -->
+    <link href="{{ app.lib_path }}/gentelella/vendors/animate.css/animate.min.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="{{ app.lib_path }}/gentelella/build/css/custom.min.css" rel="stylesheet">
+    <link href="{{ app.lib_path }}/izitoast/dist/css/iziToast.min.css" rel="stylesheet" type="text/css" />
+    {{ parent() }}
+{% endblock %}
+
+{% block body_params %}id="login-body" class="login"{% endblock %}
+
+{% block container %}
+
+    <div>
+        <a class="hiddenanchor" id="signup"></a>
+        <a class="hiddenanchor" id="signin"></a>
+
+        <div class="login_wrapper">
+            <div class="animate form login_form">
+                <section class="login_content">
+                    <form id="form-login">
+                        <h1>Moto Heper Admin</h1>
+                        <div>
+                            <input id="username" type="text" class="form-control" placeholder="Username" required="" />
+                        </div>
+                        <div>
+                            <input id="password" type="password" class="form-control" placeholder="Password" required="" />
+                        </div>
+                        <div>
+                            <button class="btn btn-default submit" type="submit" id="btn_login">Entrar</button>
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="separator">
+                            <div class="clearfix"></div>
+                            <div>
+                                <h1><i class="fa fa-book"></i> Moto Helper!</h1>
+                                <p>©2018 All Rights Reserved. Gabriel Perez</p>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ app.lib_path }}/izitoast/dist/js/iziToast.min.js"></script>
+    <script src="{{ app.lib_path }}/gentelella/vendors/jquery/dist/jquery.js"></script>
+    <script src="{{ app.lib_path }}/gentelella/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <script src="{{ app.asset_path}}/js/backend/generic-izitoast-menssage.js" type="text/javascript"></script>
+    <script src="{{ app.asset_path}}/js/backend/generic-error-handler.js" type="text/javascript"></script>
+
+    <script src="{{ app.asset_path}}/js/novo_usuario/novo-aluno-modulo.js" type="text/javascript"></script>
+    <script src="{{ app.asset_path}}/js/novo_usuario/novo-aluno-view.js" type="text/javascript"></script>
+    <script src="{{ app.asset_path}}/js/novo_usuario/novo-aluno.js" type="text/javascript"></script>
+    <script src="{{ app.asset_path}}/js/login/login.js" type="text/javascript"></script>
+
+{% endblock %}
+

@@ -1,0 +1,43 @@
+{% extends 'app/ft_base/backend.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block container %}
+    <div class="right_col" role="main">
+        <div class="">
+            <div class="row top_tiles">
+                <div class="animated flipInY col-xs-6">
+                    <div class="tile-stats">
+                        <div class="icon"><i class="fa fa-motorcycle"></i></div>
+                        <div class="count">{{ informacoes.total_veiculos }}</div>
+                        <h3>Veiculos Cadastrados</h3>
+                        <p>Total de veiculos cadastrados</p>
+                    </div>
+                </div>
+                <div class="animated flipInY col-xs-6">
+                    <div class="tile-stats">
+                        <div class="icon"><i class="fa  fa-users"></i></div>
+                        <div class="count">{{ informacoes.total_moto_boy }}</div>
+                        <h3>Moto-Boys</h3>
+                        <p>Total de moto boys cadastrados.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+
+    {{ parent() }}
+    <script src="{{ app.asset_path }}/js/veiculo_autorizacao/veiculo-autorizacao-modulo.js" type="text/javascript"></script>
+    <script src="{{ app.asset_path }}/js/veiculo_autorizacao/veiculo-autorizacao.js" type="text/javascript"></script>
+{% endblock %}
+
+

@@ -1,0 +1,28 @@
+{% extends 'admin/ft_base/backend.html.twig' %}
+
+{% block stylesheets %}
+{{ parent() }}
+{% endblock %}
+
+{% block container %}
+  <div class="right_col" role="main">
+    <div class="col-md-12">
+      <div class="col-middle">
+        <div class="text-center text-center">
+          <h1 class="error-number">403</h1>
+          <h2>Acesso não permitido</h2>
+          <p>Você ainda não foi autorizado a acessar essa página volte mais tarde
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block javascripts %}
+
+{{ parent() }}
+
+{% endblock %}
+
+

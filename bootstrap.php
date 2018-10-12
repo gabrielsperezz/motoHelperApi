@@ -68,10 +68,17 @@ $app['lib_path']   = '/lib';
 
 $app['version']    = '1.41.5';
 
+
 $apiCtrl = new MotoHelper\Api();
 $app->mount('/api/v1', $apiCtrl);
 
+$adminCtrl = new MotoHelper\Admin();
+$app->mount('/admin', $adminCtrl);
+
+
 $appCtrl = new MotoHelper\App();
-$app->mount('/admin', $appCtrl);
+$app->mount('/', $appCtrl);
+
+
 
 return $app;

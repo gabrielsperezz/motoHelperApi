@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class App implements ControllerProviderInterface
 {
-    private $noAuthCalls = ['login','login_post','post_cadastrar_login'];
+    private $noAuthCalls = ['login_app','login_post_app'];
     
     public function connect(Application $app)
     {
@@ -20,8 +20,8 @@ class App implements ControllerProviderInterface
 
         Controller\App\Login::addRoutes($controllers);
         Controller\App\Home::addRoutes($controllers);
-        Controller\App\EmpresaController::addRoutes($controllers);
-        Controller\App\VeiculoVerificacaoController::addRoutes($controllers);
+        Controller\App\VeiculoController::addRoutes($controllers);
+        Controller\App\MotoboyController::addRoutes($controllers);
         
         $controllers->before(function (Request $request) use ($app) {
             $uri    = $request->get('_route');
@@ -33,7 +33,7 @@ class App implements ControllerProviderInterface
             try {
                 $serviceToken = new Services\AccessTokenService($app['orm.em']->getRepository(AccessToken::class));
 
-                $token = $serviceToken->getToken(Cookie::getCookie($app, $request));
+                $token = $serviceToken->getToken(Cookie::getCookieApp($app, $request));
 
                 if (is_null($token)) {
                     return $this->getResponseUnauthorized($app, $request);
@@ -56,7 +56,9 @@ class App implements ControllerProviderInterface
             $token = isset($app['token']) ? $app['token'] : null;
             
             if (!is_null($token)) {
-                Cookie::setCookie($token->getToken(), $response);
+                if($token->getTipo() == AccessToken::TIPO_APP){
+                    Cookie::setCookieApp($token->getToken(), $response);
+                }
             }
             
         });

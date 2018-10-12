@@ -3,6 +3,7 @@
 namespace MotoHelper\Controller\App;
 
 use MotoHelper\Entity\LoginAdministrador;
+use MotoHelper\Entity\LoginEmpresa;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -10,27 +11,26 @@ use Symfony\Component\HttpFoundation\Response;
 use Respect\Validation\Validator as v;
 use Respect\Validation\Exceptions\NestedValidationException;
 use MotoHelper\Entity\AccessToken;
-use MotoHelper\Entity\LoginAluno;
 use MotoHelper\Helper\Cookie;
 use MotoHelper\Helper\PasswordHash;
 use MotoHelper\Helper\RequestParamsParser;
-use MotoHelper\Entity\Login as LoginEntity;
+use MotoHelper\Entity\LoginEmpresa as LoginEntity;
 
 class Login
 {
 
     public static function addRoutes( $routing )
     {
-        $routing->get('/login' , array(new self() , 'login'))->bind('login');
-        $routing->post('/login' , array(new self() , 'checkLogin'))->bind('login_post');
-        $routing->post('/aluno' , array(new self() , 'criarNovoLogin'))->bind('post_cadastrar_login');
-        $routing->get('/login/logout' , array(new self() , 'logout'))->bind('login_logout');
+
+        $routing->get('/login' , array(new self() , 'login'))->bind('login_app');
+        $routing->post('/login' , array(new self() , 'checkLogin'))->bind('login_post_app');
+        $routing->get('/login/logout' , array(new self() , 'logout'))->bind('login_logout_app');
     }
 
 
     public function login( Application $app )
     {
-        return $app['twig']->render('login/login.html.twig' , array());
+        return $app['twig']->render('app/login/login.html.twig' , array());
     }
 
     public function checkLogin( Request $request , Application $app )
@@ -46,7 +46,7 @@ class Login
         try {
             $validation->assert($request->request->all());
 
-            $loginComany = new LoginAdministrador();
+            $loginComany = new LoginEmpresa();
 
             $loginComany->setLogin($login);
             $loginComany->setSenha($password);
@@ -77,121 +77,10 @@ class Login
         return $response;
     }
 
-    public function criarNovoLogin( Application $app )
-    {
-        $response = new JsonResponse();
-        $request = $app['request'];
-
-        try {
-            $this->validateData($request->request->all());
-
-            $login = strtolower($request->request->filter('login' , null));
-            $email = $request->request->filter('email' , null);
-
-            $loginAlunoRepository = $app['orm.em']->getRepository(LoginAluno::class);
-            
-            $loginAlunoComLoginCadastrado = $loginAlunoRepository->findOneByLoginOrEmail($login , $email);
-            $loginAlunoComLoginCadastradoExiste = !empty($loginAlunoComLoginCadastrado);
-
-            if(!$loginAlunoComLoginCadastradoExiste) {
-
-                $loginAluno = new LoginAluno();
-
-                $this->definirLoginClienteFromRequest($loginAluno , $request);
-
-
-                $entityManager = $app['orm.em'];
-                $entityManager->persist($loginAluno);
-                $entityManager->flush();
-
-                $response->setData($loginAluno->toArray());
-                $response->setStatusCode(Response::HTTP_OK);
-                $this->createNewSession($app,$loginAluno, $response);
-
-            }elseif($loginAlunoComLoginCadastradoExiste) {
-                $response->setStatusCode(Response::HTTP_CONFLICT);
-                $response->setData(["erros" => $this->getErrorLoginClienteJaExiste($app , $loginAlunoComLoginCadastrado)]);
-            }
-        }catch(NestedValidationException $exception) {
-            $response->setStatusCode(Response::HTTP_BAD_REQUEST);
-            $response->setData(["erros" => $this->getErrors($exception , $app)]);
-        }
-
-        return $response;
-    }
-
-    private function definirLoginClienteFromRequest(LoginAluno $loginAluno, Request $request)
-    {
-        $login     = $request->request->filter('usuario', null);
-        $descricao = $request->request->filter('descricao', null);
-        $email     = $request->request->filter('email', null, FILTER_SANITIZE_EMAIL);
-        $senha     = $request->request->filter('password', null);
-        $ra        = $request->request->filter('ra', null);
-
-        $loginAluno->setLogin(strtolower($login));
-        $loginAluno->setDescricao($descricao);
-        $loginAluno->setEmail(strtolower($email));
-        $loginAluno->setRa($ra);
-        $loginAluno->setSenha(PasswordHash::gerarHashSenha($senha));
-        return $loginAluno;
-    }
-
-    private function getErrorLoginClienteJaExiste(Application $app, $loginAlunoComLoginCadastrado)
-    {
-        $errors = [];
-
-        $request = $app['request'];
-
-        $login = strtolower($request->request->filter('login', null));
-        $email = strtolower($request->request->filter('email', null));
-
-        foreach ($loginAlunoComLoginCadastrado as $loginAluno){
-
-            if ($loginAluno->getLogin() === $login) {
-                $errors['login'] = "Login já cadastrado";
-            }
-
-            if ($loginAluno->getEmail() === $email) {
-                $errors['email'] = "Email já cadastrado";
-            }
-        }
-
-        return $errors;
-    }
-
-    private function validateData($data)
-    {
-        $validation = v::arrayType()
-            ->key('usuario', v::regex('/^[a-zA-z09@.-_]{6,}$/')->setName('login'))
-            ->key('descricao', v::stringType()->notEmpty()->setName("descricao"))
-            ->key('ra', v::stringType()->notEmpty()->setName("ra"))
-            ->key('email', v::email()->setName("email"))
-            ->key('password', v::regex('/^[a-zA-Z0-9!@#$%^&*()-=_+]{4,}$/'));
-
-        $validation->assert($data);
-    }
-
-    private function getErrors(NestedValidationException $exception, Application $app)
-    {
-        $errors = array_filter(
-            $exception->findMessages([
-                'usuario'     => "Login inválido" ,
-                'descricao' => "Descrição é inválida",
-                'email'     => "Email é inválido",
-                'ra'     => "R.A informado é inválido",
-                'password'     => "Senha é inválida"
-            ]),
-            function ($value) {
-                return (strlen($value) > 0);
-            });
-        return $errors;
-    }
-
-
     public function logout( Application $app , Request $request )
     {
         $response = $app->redirect("/login");
-        $token = Cookie::getCookie($app , $request);
+        $token = Cookie::getCookieApp($app , $request);
 
         if(strlen($token) > 0) {
             $entityManager = $app['orm.em'];
@@ -202,7 +91,7 @@ class Login
             $entityManager->remove($accessToken);
             $entityManager->flush();
         }
-        $response->headers->clearCookie(Cookie::COOKIE_NAME);
+        $response->headers->clearCookie(Cookie::COOKIE_NAME_APP);
         return $response;
     }
 
@@ -236,12 +125,13 @@ class Login
 
         $accessToken->setLogin($user);
         $accessToken->setToken($token);
+        $accessToken->setTipo(AccessToken::TIPO_APP);
 
         $entityManager->persist($accessToken);
         $entityManager->flush();
 
         $loginToken = $accessToken->getToken();
-        Cookie::setCookie($loginToken , $response);
+        Cookie::setCookieApp($loginToken , $response);
     }
 
 }
