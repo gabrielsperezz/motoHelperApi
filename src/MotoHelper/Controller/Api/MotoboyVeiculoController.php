@@ -24,6 +24,7 @@ class MotoboyVeiculoController
     public static function addRoutes($routing)
     {
         $routing->post('/veiculo/{id}/motoboy/{id_motoboy}', array(new self(), 'cadastrarVeiculoMotoboy'))->bind('post_cadastrar_motoboy_veiculo');
+        $routing->get('/motoboy/{id}/veiculos', array(new self(), 'buscarVeiculos'))->bind('get_motoboy_veiculo');
         $routing->delete('/veiculo/motoboy/{id}', array(new self(), 'deletarVeiculoMotoboy'))->bind('delete_veiculo_motoboy');
     }
 
@@ -41,6 +42,29 @@ class MotoboyVeiculoController
 
             $response->setData(["veiculo" => $motoboyVeiculo->toArray(), "msg" => "Informações do veiculo atualizada com sucesso"]);
             $response->setStatusCode( Response::HTTP_OK);
+
+        } catch (NestedValidationException $exception) {
+            $response->setStatusCode(Response::HTTP_BAD_REQUEST);
+            $response->setData(["erros" => $this->getErrors($exception, $app)]);
+        }
+
+        return $response;
+    }
+
+
+    public function buscarVeiculos(Application $app, $id)
+    {
+        $response = new JsonResponse();
+
+        try {
+
+            $veiculosMotoboyRepsitory = $app['orm.em']->getRepository(VeiculoMotoboy::class);
+            $veiculos = array_map(function ($veiculo){
+                return $veiculo->toTable();
+            },$veiculosMotoboyRepsitory->findBy(["motoboy" => $id]));
+
+            $response->setData(["data" => $veiculos]);
+               $response->setStatusCode( Response::HTTP_OK);
 
         } catch (NestedValidationException $exception) {
             $response->setStatusCode(Response::HTTP_BAD_REQUEST);

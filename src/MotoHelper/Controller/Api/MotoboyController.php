@@ -2,6 +2,7 @@
 
 namespace MotoHelper\Controller\Api;
 
+use MotoHelper\Helper\PasswordHash;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -120,7 +121,7 @@ class MotoboyController
         $senha = $request->request->filter('senha', null);
 
         if($atualizarSenha){
-            $motoboy->setSenha($senha);
+            $motoboy->setSenha(PasswordHash::gerarHashSenha($senha));
         }
 
         $motoboy->setDescricao($nome);

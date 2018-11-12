@@ -36,4 +36,9 @@ class LoginEmpresa extends Login
         return self::TIPO_EMPRESA;
     }
 
+    public function toArray()
+    {
+        return array_merge(parent::toArray(), ['empresa'=> $this->getEmpresa()->toArray()]);
+    }
+
 }

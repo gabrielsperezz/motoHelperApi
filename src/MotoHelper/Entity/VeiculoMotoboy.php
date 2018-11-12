@@ -64,7 +64,21 @@ class VeiculoMotoboy
         return $this;
     }
 
-    public function toArray(){
+    public function toTable()
+    {
+        return [
+            $this->id,
+            $this->veiculo->getDescricao(),
+            $this->veiculo->getPlaca(),
+            $this->veiculo->getCor()->getDescricao(),
+            $this->veiculo->getModelo(),
+            $this->veiculo->getFabricante(),
+            '<td> <i data-id-veiculo="'.$this->id.'" class="btn btn-danger btn-sm fa fa-remove remover_motoboy"></i></td>'
+        ];
+    }
+
+    public function toArray()
+    {
         return [
             'veiculo' => $this->veiculo->toArray(),
             'motoboy' => $this->motoboy->toArray()

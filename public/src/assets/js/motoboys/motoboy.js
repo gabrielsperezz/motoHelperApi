@@ -36,15 +36,24 @@
             motoboyModulo.insertMotoboyVeiculo( idVeiculo,idMotoboy,function (data) {
 
                 motoboyView.buttonReset(btn);
-                motoboyView.saveMotoboySucesso(data);
+                motoboyView.saveMotoboyVeiculoSucesso(data);
 
             }, function (error) {
 
                 motoboyView.buttonReset(btn);
-                motoboyView.saveMotoboyErro(error);
+                motoboyView.saveMotoboyVeiculoErro(error);
 
             });
 
+        });
+
+        $("#table_motoboy_veiculos").on("click", ".remover_motoboy", function () {
+            var id = $(this).data('id-veiculo');
+            motoboyModulo.deleteVeiculoMotoboy(id,function (data) {
+                motoboyView.saveMotoboyVeiculoSucesso(data);
+            },function (error) {
+                motoboyView.saveMotoboyVeiculoErro(error);
+            })
         });
 
         $("#cancelar").click(function (e) {

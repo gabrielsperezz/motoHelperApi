@@ -86,10 +86,9 @@ class AccessToken
 
     public function toArray()
     {
-        $user_id    = ($this->login && $this->login instanceof Login) ? $this->login->getId() : null;
         return [
             'token' => $this->token,
-            'user_id' => $user_id
+            'user' => $this->login->toArray()
         ];
     }
 }

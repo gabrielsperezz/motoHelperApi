@@ -68,6 +68,8 @@ $app['lib_path']   = '/lib';
 
 $app['version']    = '1.41.5';
 
+$apiCtrl = new MotoHelper\ApiMobile();
+$app->mount('/api/mobile', $apiCtrl);
 
 $apiCtrl = new MotoHelper\Api();
 $app->mount('/api/v1', $apiCtrl);
