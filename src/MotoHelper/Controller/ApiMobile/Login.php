@@ -5,6 +5,7 @@ namespace MotoHelper\Controller\ApiMobile;
 use MotoHelper\Entity\LoginAdministrador;
 use MotoHelper\Entity\LoginCliente;
 use MotoHelper\Entity\LoginEmpresa;
+use MotoHelper\Entity\LoginMotoboy;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,8 +25,58 @@ class Login
     {
 
         $routing->post('/login' , array(new self() , 'checkLogin'))->bind('login_app_hibrido');
+        $routing->post('/login/motoboy' , array(new self() , 'checkLoginMotoboy'))->bind('login_app_hibrido_motoboy');
         $routing->post('/login/novo' , array(new self() , 'cadastrarNovoLoginMobile'))->bind('cadastrar_login_app_mobile');
     }
+
+    public function checkLoginMotoboy( Request $request , Application $app )
+    {
+
+        $validation = v::arrayType()->key('username' , v::stringType()->notEmpty())
+            ->key('password' , v::stringType()->regex('/^[a-zA-z0-9!@#$%]{6,}$/'));
+
+        $response = new JsonResponse();
+
+        $login = $request->request->get('username');
+        $password = $request->request->get('password');
+
+        try {
+            $validation->assert($request->request->all());
+
+            $loginMotoboy = new LoginMotoboy();
+
+            $loginMotoboy->setLogin($login);
+            $loginMotoboy->setSenha($password);
+
+            if($this->verificarUsuarioMotoboyPorLoginESenha($app , $loginMotoboy)) {
+                $token = $this->getNewToken($app , $loginMotoboy );
+
+                $response->setData($token);
+
+                $response->setStatusCode(Response::HTTP_OK);
+            }else {
+                $response->setStatusCode(Response::HTTP_UNAUTHORIZED);
+                $response->setContent(json_encode(array("erro" => 'Não foi possível autenticar com os dados informados.')));
+            }
+        }catch(NestedValidationException $exception) {
+            $errors = array_filter(
+                $exception->findMessages([
+                    'username' => 'Login não pode estar vazio' ,
+                    'password' => 'Senha inválida'
+                ]) ,
+                function( $value ) {
+                    return (strlen($value) > 0);
+
+                });
+            $response->setStatusCode(Response::HTTP_BAD_REQUEST);
+            $response->setContent(json_encode(array("erros" => $errors)));
+        }catch(\Exception $ex) {
+            $app['logger']->critical($ex->getMessage());
+        }
+
+        return $response;
+    }
+
 
     public function checkLogin( Request $request , Application $app )
     {
@@ -120,7 +171,26 @@ class Login
         return $loginValido;
     }
 
-    private function getNewToken( Application $app , LoginCliente $user )
+    private function verificarUsuarioMotoboyPorLoginESenha( Application $app , LoginMotoboy &$login )
+    {
+        $loginValido = false;
+
+        $entityManager = $app['orm.em'];
+
+        $loginRepository = $entityManager->getRepository(LoginMotoboy::class);
+        var_dump($login->getLogin());exit;
+        $loginE = $loginRepository->findOneBy(['login' => $login->getLogin()]);
+
+        if(!is_null($loginE) && $loginE->verifyPassword($login->getSenha())) {
+            $loginValido = true;
+            $login = $loginE;
+        }
+
+        return $loginValido;
+    }
+
+
+    private function getNewToken( Application $app , \MotoHelper\Entity\Login $user )
     {
         $entityManager = $app['orm.em'];
 

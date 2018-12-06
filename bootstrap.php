@@ -10,6 +10,7 @@ use Silex\Provider\DoctrineServiceProvider;
 use DerAlex\Silex\YamlConfigServiceProvider;
 use Dflydev\Silex\Provider\DoctrineOrm\DoctrineOrmServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
+use MotoHelper\Helper\Mongo\Silex\Provider\MongoServiceProvider;
 
 // Decline static file requests back to the PHP built-in webserver
 if (php_sapi_name() === 'cli-server') {
@@ -41,6 +42,13 @@ $configDoctrineOrm  = $app['config']['doctrine']['orm'];
 $configParams       = $app['config']['params'];
 $configTranslator   = $app['config']['translate'];
 $confTransCfStdLang = $app['config']['translator_config']['default_lang'];
+$configMongo        = $app['config']['mongo'];
+
+define("MQTT_LINK", "mqttdev.fullarm.com");
+define("MQTT_PORTA", "8884");
+define("MQTT_USER", "moto_helper");
+define("MQTT_PASSWORD", "123456");
+define("MQTT_CLIENT_ID",hash('sha256',  round(microtime(true) * 1000).rand(1, 1000000000)));
 
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 $app->register(new MonologServiceProvider(), $configMonolog);
@@ -48,6 +56,7 @@ $app->register(new TwigServiceProvider(), $configTwig);
 $app->register(new DoctrineServiceProvider, $configDoctrine);
 $app->register(new DoctrineOrmServiceProvider(), $configDoctrineOrm);
 $app->register(new TranslationServiceProvider(), $configTranslator);
+$app->register(new MongoServiceProvider(), $configMongo);
 
 $app['translator'] = $app->share($app->extend('translator', function ($translator, $app) {
     $translator->addLoader('yaml', new Symfony\Component\Translation\Loader\YamlFileLoader());

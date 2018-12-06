@@ -15,7 +15,8 @@
         "guzzlehttp/guzzle": "^6.2",
         "respect/validation": "^1.0",
         "symfony/console": "2.5",
-        "symfony/translation": "~2.0"
+        "symfony/translation": "~2.0",
+        "bluerhinos/phpmqtt": "dev-master"
     },
     "require-dev": {
         "symfony/browser-kit": "*",

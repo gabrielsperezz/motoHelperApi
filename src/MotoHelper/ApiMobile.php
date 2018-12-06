@@ -12,13 +12,15 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ApiMobile implements ControllerProviderInterface
 {
-    private $noAuthCalls = ['login_app_hibrido', 'cadastrar_login_app_mobile'];
+    private $noAuthCalls = ['login_app_hibrido', 'cadastrar_login_app_mobile', 'login_app_hibrido_motoboy'];
     
     public function connect(Application $app)
     {
         $controllers = $app['controllers_factory'];
 
         Controller\ApiMobile\Login::addRoutes($controllers);
+        Controller\ApiMobile\Corrida::addRoutes($controllers);
+        Controller\ApiMobile\Posicoes::addRoutes($controllers);
 
         $controllers->before(function (Request $request) use ($app) {
             $uri    = $request->get('_route');
@@ -28,18 +30,17 @@ class ApiMobile implements ControllerProviderInterface
             }
             
             try {
+
                 $serviceToken = new Services\AccessTokenService($app['orm.em']->getRepository(AccessToken::class));
-                
-                $token = $serviceToken->getToken(Cookie::getCookie($app, $request));
-            
+
+                $token = $serviceToken->getToken($request->headers->get("token"));
+
                 if (is_null($token)) {
-                    $token = $serviceToken->getToken(Cookie::getCookieApp($app, $request));
-                    if(is_null($token)){
-                        return $this->getResponseUnauthorized($app, $request);
-                    }
+                    return $this->getResponseUnauthorized($app, $request);
                 }
                 
                 $app['token'] = $token;
+                $app['user'] = $token->getLogin();
             } catch (\Exception $ex) {
                 $app['logger']->critical($ex->getMessage());
                 return $this->getErrorResponse($app, Response::HTTP_INTERNAL_SERVER_ERROR);

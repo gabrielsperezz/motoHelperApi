@@ -25,6 +25,11 @@ use MotoHelper\Helper\PasswordHash;
 abstract class Login
 {
 
+    static $ADMIN = 1;
+    static $EMPRESA = 2;
+    static $USUARIO = 3;
+    static $MOTOBOY = 3;
+
     /**
      * @var integer
      * @ORM\Id
@@ -56,14 +61,32 @@ abstract class Login
     * @ORM\Column(type="string")
     */
     protected $email;
-    
+
+    /**
+     * @var LoginPosicoes
+     * @ORM\OneToOne(targetEntity="LoginPosicoes", mappedBy="login",cascade={"persist","remove"}))
+     */
+    private $posicoes;
+
     public function __construct()
     {
+        $this->posicoes = new LoginPosicoes();
     }
 
     public function getId()
     {
         return $this->id;
+    }
+
+    public function getPosicoes()
+    {
+        return $this->posicoes;
+    }
+
+    public function setPosicoes($posicoes)
+    {
+        $this->posicoes = $posicoes;
+        return $this;
     }
     
     public function getLogin()
@@ -124,7 +147,8 @@ abstract class Login
             'tipo' => $this->getTipo(),
             'login' => $this->login,
             'email' => $this->email,
-            'descricao' => $this->descricao
+            'descricao' => $this->descricao,
+            'posicao' => !is_null($this->getPosicoes())? $this->getPosicoes()->toArray() : ["laitude" => '', "longitude" => '']
         ];
     }
 }

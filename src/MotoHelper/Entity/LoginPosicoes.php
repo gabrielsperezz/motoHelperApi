@@ -5,11 +5,11 @@ namespace MotoHelper\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * VeiculoVerificacao
+ * LoginPosicoes
  * @ORM\Entity
- * @ORM\Table(name="veiculo_verificacao")
+ * @ORM\Table(name="login_posicoes")
  */
-class VeiculoVerificacao
+class LoginPosicoes
 {
 
     /**
@@ -21,89 +21,67 @@ class VeiculoVerificacao
     private $id;
 
     /**
-     * @var Veiculo
-     * @ORM\OneToOne(targetEntity="Veiculo",inversedBy="verificacao")
-     * @ORM\JoinColumn(name="id_veiculo",referencedColumnName="id", onDelete="CASCADE")
+     * @var Login
+     * @ORM\OneToOne(targetEntity="Login",inversedBy="posicao")
+     * @ORM\JoinColumn(name="id_login",referencedColumnName="id", onDelete="CASCADE")
      */
-    private $veiculo;
+    private $login;
 
     /**
-     * @var boolean
-     * @ORM\Column(type="boolean")
+     * @var string
+     * @ORM\Column(type="string")
      */
-    private $verificado;
+    private $latitude;
 
     /**
-     * @var datetime
-     * @ORM\Column(type="datetime")
+     * @var string
+     * @ORM\Column(type="string")
      */
-    private $data_solicitacao;
-
-    public function __construct( Veiculo $veiculo )
-    {
-        $this->data_solicitacao = new \DateTime('UTC');
-        $this->verificado = false;
-        $this->veiculo = $veiculo;
-    }
+    private $longitude;
 
     public function getId()
     {
         return $this->id;
     }
 
-    public function getVeiculo()
+    public function getLogin()
     {
-        return $this->veiculo;
+        return $this->login;
     }
 
-    public function setVeiculo( Veiculo $veiculo)
+    public function setLogin($login)
     {
-        $this->veiculo = $veiculo;
+        $this->login = $login;
         return $this;
     }
 
-    public function isVerificado()
+    public function getLatitude()
     {
-        return $this->verificado;
+        return $this->latitude;
     }
 
-    public function setVerificado( )
+    public function setLatitude($latitude)
     {
-        $this->verificado = true;
-        $this->data_resposta = new \DateTime();
+        $this->latitude = $latitude;
         return $this;
     }
 
-    public function getDataSolicitacao()
+    public function getLongitude()
     {
-        return $this->data_solicitacao;
+        return $this->longitude;
     }
 
-    public function setDataSolicitacao( $data_solicitacao )
+    public function setLongitude($longitude)
     {
-        $this->data_solicitacao = $data_solicitacao;
-        return $this;
-    }
-
-    public function getDataResposta()
-    {
-        return $this->data_resposta;
-    }
-
-    public function setDataResposta( $data_resposta )
-    {
-        $this->data_resposta = $data_resposta;
+        $this->longitude = $longitude;
         return $this;
     }
 
     public function toArray()
     {
-        $dataSolicitacao = $this->data_solicitacao->format('d-m-Y');
-
         return [
-            "data_solicitacao" => $dataSolicitacao,
-            "data_resposta" => $this->data_resposta,
-            "verificado" => $this->verificado
+            "latitude" => $this->latitude,
+            "longitude" => $this->longitude
         ];
     }
 }

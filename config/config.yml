@@ -3,5 +3,6 @@ imports:
   - { resource: doctrine.yml }
   - { resource: translate.yml }
   - { resource: params.yml }
+  - { resource: mongo.yml  }
 twig:
   twig.path: ../views

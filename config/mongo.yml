@@ -1,0 +1,7 @@
+mongo:
+    mongo.connections:
+        default:
+            server: localhost:27017
+            database: moto_helper
+            options:
+                connect: true
