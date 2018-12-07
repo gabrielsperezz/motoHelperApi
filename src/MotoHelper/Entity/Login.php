@@ -71,6 +71,7 @@ abstract class Login
     public function __construct()
     {
         $this->posicoes = new LoginPosicoes();
+        $this->posicoes->setLogin($this);
     }
 
     public function getId()

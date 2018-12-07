@@ -2,6 +2,7 @@
 
 namespace MotoHelper\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Util\Debug;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -37,9 +38,23 @@ class LoginMotoboy extends Login
 
     /**
      * @var string
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $id_corrida_atual;
+
+    /**
+     * @var Veiculo
+     * @ORM\ManyToOne(targetEntity="Veiculo")
+     * @ORM\JoinColumn(name="id_veiculo",referencedColumnName="id", onDelete="SET NULL", nullable=true)
+     */
+    private $veiculo_atual;
+
+
+    public function __construct()
+    {
+        $this->veiculo_motoboy = new ArrayCollection();
+        $this->disponivel_para_corrida = false;
+    }
 
     public function getEmpresa()
     {
@@ -90,6 +105,17 @@ class LoginMotoboy extends Login
         return $this;
     }
 
+    public function getVeiculoAtual()
+    {
+        return $this->veiculo_atual;
+    }
+
+    public function setVeiculoAtual($veiculo_atual)
+    {
+        $this->veiculo_atual = $veiculo_atual;
+        return $this;
+    }
+
     public function toArray()
     {
         $veicuclos = [];
@@ -97,7 +123,8 @@ class LoginMotoboy extends Login
             array_push($veicuclos, $veiculo->getVeiculo()->toArray());
         }
         return array_merge(parent::toArray(), [
-            'veiculos' => $veicuclos
+            'veiculos' => $veicuclos,
+            'veiculo_atual' => is_null($this->veiculo_atual)? null : $this->veiculo_atual->toArray()
         ]);
     }
 

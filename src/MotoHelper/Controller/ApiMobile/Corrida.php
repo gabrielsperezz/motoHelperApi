@@ -29,7 +29,6 @@ class Corrida extends ApiMobileAbstract
         $response = new JsonResponse();
 
         try {
-            $novaCorrida = [];
             $login = $this->getUserInfo($id_login, $app);
 
             if (!$login->isProcurandoCorrida()) {
@@ -42,11 +41,16 @@ class Corrida extends ApiMobileAbstract
 
             
                 $this->publishMessage("corrida/nova", $novaCorrida);
-            
+
                 $em->persist($login);
                 $em->flush();
+            }else{
+                $mongo = $this->getMongoDb($app);
+
+                $novaCorrida = $mongo->findOne(["status" => 0, "id_usuario" => (int) $id_login]);
+
             }
-            $response->setData($novaCorrida);
+            $response->setData($this->getCorridaMap($novaCorrida));
             $response->setStatusCode(Response::HTTP_OK);
         } catch (\Exception $ex) {
             $app['logger']->critical($ex->getMessage());
@@ -101,6 +105,7 @@ class Corrida extends ApiMobileAbstract
             $em->persist($ususario);
             $em->flush();
 
+            $this->publishMessage("corrida/$id_corrida/aceita", $this->getCorridaMap($corrida));
             $response->setData($this->getCorridaMap($corrida));
             $response->setStatusCode(Response::HTTP_OK);
         } catch (\Exception $ex) {

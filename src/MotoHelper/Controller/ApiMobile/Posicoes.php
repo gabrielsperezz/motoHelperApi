@@ -2,9 +2,11 @@
 
 namespace MotoHelper\Controller\ApiMobile;
 
+use Doctrine\DBAL\Types\Type;
 use MongoId;
+use MotoHelper\Entity\LoginMotoboy;
 use Silex\Application;
-use MotoHelper\Entity\Login;
+use MotoHelper\Entity\Login as LoginEntity;
 use MotoHelper\Entity\LoginPosicoes;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,6 +18,8 @@ class Posicoes extends ApiMobileAbstract
     public static function addRoutes($routing)
     {
         $routing->put('/login/{id_login}/ultimaposicao', array(new self(), 'atualizarUltimaPosicaoLogin'))->bind('atualizar_ultima_posicao_login');
+
+        $routing->get('/motoboys/ultimaposicao', array(new self(), 'buscarUltimaPosicaoDeMotoboys'))->bind('buscar_ultima_posicao_motoboys');
     }
 
     public function atualizarUltimaPosicaoLogin(Application $app, Request $request, $id_login)
@@ -50,7 +54,31 @@ class Posicoes extends ApiMobileAbstract
         return $response;
     }
 
-    private function atualizarPosicaoEmCorrida(Login $login, LoginPosicoes $loginPosicoes , $app)
+    public function buscarUltimaPosicaoDeMotoboys(Application $app)
+    {
+
+        $response = new JsonResponse();
+
+        try {
+
+            $em = $this->getEm($app);
+            $motoboyRepository = $em->getRepository(LoginMotoboy::class);
+
+            $posicoes = array_map(function ($motoboy){
+                return $motoboy->toArray();
+            }, $motoboyRepository->findAll());
+
+
+            $response->setData($posicoes);
+            $response->setStatusCode(Response::HTTP_OK);
+        } catch (\Exception $ex) {
+            $app['logger']->critical($ex->getMessage());
+        }
+
+        return $response;
+    }
+
+    private function atualizarPosicaoEmCorrida(LoginEntity $login, LoginPosicoes $loginPosicoes , $app)
     {
         if($login->getIdCorridaAtual()){
             $mongo = $this->getMongoDb($app);

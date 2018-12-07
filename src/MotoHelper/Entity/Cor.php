@@ -24,6 +24,13 @@ class Cor
      */
     private $descricao;
 
+    /**
+     * @var string
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $label;
+
+
     public function getId()
     {
         return $this->id;
@@ -41,12 +48,12 @@ class Cor
     }
 
 
-
     public function toArray()
     {
         return [
             'id' => $this->id,
             'descricao' => $this->descricao,
+            'label' => $this->label
         ];
     }
 }

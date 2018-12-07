@@ -35,10 +35,10 @@ class MotoboyVeiculoController
         try {
 
             $motoboyVeiculo = $this->definirveiculoFromRequest($app, $id, $id_motoboy);
-
             $entityManager = $app['orm.em'];
             $entityManager->persist($motoboyVeiculo);
             $entityManager->flush();
+            $veiculo = new VeiculoMotoboy();
 
             $response->setData(["veiculo" => $motoboyVeiculo->toArray(), "msg" => "Informações do veiculo atualizada com sucesso"]);
             $response->setStatusCode( Response::HTTP_OK);
@@ -83,6 +83,7 @@ class MotoboyVeiculoController
             $veiculo = $veiculoRepository->find($id);
             $veiculoExiste = !is_null($veiculo);
             if($veiculoExiste){
+                $veiculo->getMotoboy()->setVeiculoAtual(null);
                 $entityManager = $app['orm.em'];
                 $entityManager->remove($veiculo);
                 $entityManager->flush();
@@ -104,12 +105,13 @@ class MotoboyVeiculoController
 
     private function definirveiculoFromRequest(Application $app, $idVeiculo, $idMotoboy )
     {
-        $motoboy = $app['orm.em']->getReference(LoginMotoboy::class, $idMotoboy);
+        $motoboy = $app['orm.em']->find(LoginMotoboy::class, $idMotoboy);
         $veiculo = $app['orm.em']->getReference(Veiculo::class, $idVeiculo);
 
         $motoboyVeiculo = new VeiculoMotoboy();
         $motoboyVeiculo->setMotoboy($motoboy);
         $motoboyVeiculo->setVeiculo($veiculo);
+        $motoboy->setVeiculoAtual($veiculo);
 
         return $motoboyVeiculo;
     }
