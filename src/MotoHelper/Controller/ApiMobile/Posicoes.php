@@ -3,6 +3,8 @@
 namespace MotoHelper\Controller\ApiMobile;
 
 use Doctrine\DBAL\Types\Type;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use MongoId;
 use MotoHelper\Entity\LoginMotoboy;
 use Silex\Application;
@@ -38,6 +40,7 @@ class Posicoes extends ApiMobileAbstract
 
             $posicoes->setLatitude($latitude);
             $posicoes->setLongitude($longitude);
+            $posicoes->setLabel($this->getEnderecoPorLatLong($posicoes));
 
             $em = $this->getEm($app);
             $this->publishMessage("ultimaposicao/". $id_login, $posicoes->toArray());
@@ -82,13 +85,40 @@ class Posicoes extends ApiMobileAbstract
     {
         if($login->getIdCorridaAtual()){
             $mongo = $this->getMongoDb($app);
+
+            $this->publishMessage("corrida/". $login->getIdCorridaAtual(). "/posicoes", $loginPosicoes->toArray());
+
             $idMongo = new MongoId($login->getIdCorridaAtual());
-            if($login::$MOTOBOY == $login->getTipo()){
+            if(LoginEntity::$MOTOBOY == $login->getTipo()){
                 $mongo->update(["_id" =>$idMongo], ['$push' => ["posicoes_motoboy" => $loginPosicoes->toArray()]]);
-            }elseif ($login->getTipo()  == Login::$USUARIO){
+            }elseif ($login->getTipo()  == LoginEntity::$USUARIO){
                 $mongo->update(["_id" =>$idMongo], ['$push' => ["posicoes_usuario" => $loginPosicoes->toArray()]]);
             }
         }
+    }
+    private function getEnderecoPorLatLong(LoginPosicoes $loginPosicoes)
+    {
+
+        $client = new Client();
+
+        try{
+            $responseApi = $client->request('GET' , "https://reverse.geocoder.cit.api.here.com/6.2/reversegeocode.json", [
+                'query' => [
+                    "app_id" => "7ArpnlTqh018YozMUeXE",
+                    "app_code" => "VpAlGtNYGgBUEWvrDb6wpg",
+                    "mode" => "retrieveAddresses",
+                    "maxresults" => 1,
+                    "prox" => $loginPosicoes->getLatLong()
+                ]
+            ]);
+            $requestInfo = \GuzzleHttp\json_decode($responseApi->getBody()->getContents());
+            $endereco = $requestInfo->Response->View[0]->Result[0]->Location->Address->Label;
+
+        }catch(RequestException $ex){
+            $endereco= "";
+        }
+
+        return $endereco;
     }
 
 }

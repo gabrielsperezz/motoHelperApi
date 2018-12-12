@@ -21,6 +21,7 @@ class ApiMobile implements ControllerProviderInterface
         Controller\ApiMobile\Login::addRoutes($controllers);
         Controller\ApiMobile\Corrida::addRoutes($controllers);
         Controller\ApiMobile\Posicoes::addRoutes($controllers);
+        Controller\ApiMobile\User::addRoutes($controllers);
 
         $controllers->before(function (Request $request) use ($app) {
             $uri    = $request->get('_route');

@@ -4,6 +4,7 @@ namespace MotoHelper\Controller\ApiMobile;
 
 use MongoId;
 use MongoCollection;
+use MongoDate;
 use Bluerhinos\phpMQTT;
 use Monolog\Handler\Mongo;
 
@@ -45,14 +46,31 @@ abstract class ApiMobileAbstract
             $this->mqttClient->publish($topic , json_encode($mensagem), 1);
 
             $this->mqttClient->close();
+            $this->mqttClient = null;
         }
     }
 
     public function getCorridaMap($corrida)
     {
         $corrida['id'] = $this->getIdCorridaPorObjectIdMongo($corrida["_id"]);
+        $corrida['inicio'] = $this->getDataFormat($corrida['data_hora_inicio']);
+        $corrida['fim'] = $this->getDataFormat($corrida['data_hora_fim']);
+        $corrida['solicitado'] = $this->getDataFormat($corrida['data_solicitacao']);
         unset($corrida['_id']);
         return $corrida;
+    }
+
+    private function getDataFormat(MongoDate $data = null)
+    {
+        $dataFormat = null;
+        if(!is_null($data)){
+
+            $dateTime = $data->toDateTime();
+            $dateTime->setTimezone(new \DateTimeZone("America/Sao_Paulo"));
+            $dataFormat = $dateTime->format("d/m/Y H-i");
+        }
+
+        return $dataFormat;
     }
 
     public function getCorridaPorId($idOcorrencia, $app)

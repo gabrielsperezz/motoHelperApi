@@ -39,6 +39,12 @@ class LoginPosicoes
      */
     private $longitude;
 
+    /**
+     * @var string
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $label;
+
     public function getId()
     {
         return $this->id;
@@ -77,9 +83,26 @@ class LoginPosicoes
         return $this;
     }
 
+    public function getLatLong()
+    {
+        return "$this->latitude,$this->longitude";
+    }
+
+    public function getLabel()
+    {
+        return $this->label;
+    }
+
+    public function setLabel($label)
+    {
+        $this->label = $label;
+        return $this;
+    }
+
     public function toArray()
     {
         return [
+            "label" => $this->label,
             "latitude" => $this->latitude,
             "longitude" => $this->longitude
         ];

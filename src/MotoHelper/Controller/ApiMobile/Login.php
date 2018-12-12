@@ -178,7 +178,7 @@ class Login
         $entityManager = $app['orm.em'];
 
         $loginRepository = $entityManager->getRepository(LoginMotoboy::class);
-        var_dump($login->getLogin());exit;
+
         $loginE = $loginRepository->findOneBy(['login' => $login->getLogin()]);
 
         if(!is_null($loginE) && $loginE->verifyPassword($login->getSenha())) {
