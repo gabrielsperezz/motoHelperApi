@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class App implements ControllerProviderInterface
 {
-    private $noAuthCalls = ['login_app','login_post_app'];
+    private $noAuthCalls = ['login_app','login_post_app', 'localizacoes'];
     
     public function connect(Application $app)
     {
@@ -22,7 +22,8 @@ class App implements ControllerProviderInterface
         Controller\App\Home::addRoutes($controllers);
         Controller\App\VeiculoController::addRoutes($controllers);
         Controller\App\MotoboyController::addRoutes($controllers);
-        
+        Controller\App\Localizacao::addRoutes($controllers);
+
         $controllers->before(function (Request $request) use ($app) {
             $uri    = $request->get('_route');
 

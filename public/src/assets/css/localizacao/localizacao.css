@@ -1,0 +1,32 @@
+.marker_div_localizacao {
+    margin-left: 26px;
+    margin-top: -15px;
+    width: 4px;
+}
+
+.marker_div_localizacao span {
+    font-weight: bold;
+    color: #fff;
+    text-align: center;
+    padding-left: 20%;
+    padding-right: 25%;
+    white-space: nowrap;
+    background-color: #38a9db;
+}
+
+.marker_div_blue{
+    background-color: #38a9db;
+}
+.popup_div_botoes{
+    float: right;
+    width: 255px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.pop_up_rastreados_detalhes {
+    width: 240px;
+    padding-left: 10px;
+    padding-right: 10px;
+    float: left;
+}

@@ -312,7 +312,7 @@ class Corrida extends ApiMobileAbstract
         ];
     }
     
-    private function buscarRotasPorLoginEntity(LoginEntity $loginPrincipal, LoginEntity $loginSecundario)
+    private function    buscarRotasPorLoginEntity(LoginEntity $loginPrincipal, LoginEntity $loginSecundario)
     {
         try {
             $client = new Client();

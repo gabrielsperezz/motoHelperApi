@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ApiMobile implements ControllerProviderInterface
 {
-    private $noAuthCalls = ['login_app_hibrido', 'cadastrar_login_app_mobile', 'login_app_hibrido_motoboy'];
+    private $noAuthCalls = ['login_app_hibrido', 'cadastrar_login_app_mobile', 'login_app_hibrido_motoboy', 'atualizar_ultima_posicao_login'];
     
     public function connect(Application $app)
     {
